@@ -19,6 +19,11 @@ This setup includes:
 
 ## Usage
 
+### Setup Cloud Connection
+ - use AWS CLI or GCP CLI to connect your local machine to the cloud provider.
+ - setup IAM access tokens, users to use.
+ - `Terraform init` will automatically install required packages for that cloud provider. 
+
 ### Initialize Terraform
 
 Run the following command to initialize the Terraform environment:

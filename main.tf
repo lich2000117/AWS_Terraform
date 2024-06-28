@@ -1,26 +1,24 @@
 provider "aws" {
-  region = "us-east-1"  # default region
+  region = var.region  # Use the variable
 }
 
 data "aws_ami" "ubuntu" {
   most_recent = true
 
-  filter {
-    name   = "name"
-    values = ["ubuntu/images/hvm-ssd/ubuntu-jammy-22.04-amd64-server-*"]
+  dynamic "filter" {
+    for_each = var.ami_filters
+    content {
+      name   = filter.value.name
+      values = filter.value.values
+    }
   }
 
-  filter {
-    name   = "virtualization-type"
-    values = ["hvm"]
-  }
-
-  owners = ["099720109477"] # Canonical
+  owners = var.ami_owners
 }
 
 resource "aws_instance" "web" {
   ami           = data.aws_ami.ubuntu.id
-  instance_type = "t3.micro"
+  instance_type = var.instance_type  # Use the variable
 
   tags = {
     Name = "HelloWorld"
